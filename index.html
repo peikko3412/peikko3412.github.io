@@ -1,212 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Roblox Game ID Tool</title>
+<title>Roblox Game Hub</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle, #111, #050507);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0b0b0f;
+  color:white;
+  overflow:hidden;
+}
 
-    .app {
-      width: 450px;
-      height: 520px;
-      background: #15151d;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.8);
-      overflow: hidden;
-      position: relative;
-      animation: fadeIn 0.8s ease;
-    }
+.screen {
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: scale(0.9);}
-      to {opacity: 1; transform: scale(1);}
-    }
+.active {
+  display:flex;
+}
 
-    .page {
-      width: 100%;
-      height: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-      display: none;
-      text-align: center;
-    }
+/* card */
+.card {
+  background:#15151d;
+  padding:20px;
+  width:400px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 0 20px rgba(0,0,0,0.7);
+}
 
-    .active {
-      display: block;
-      animation: slide 0.4s ease;
-    }
+button {
+  margin-top:10px;
+  padding:10px;
+  width:100%;
+  background:red;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
 
-    @keyframes slide {
-      from {transform: translateX(50px); opacity: 0;}
-      to {transform: translateX(0); opacity: 1;}
-    }
+/* feed */
+.post {
+  background:#1c1c25;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+}
 
-    h1 {
-      font-size: 22px;
-    }
-
-    .warning {
-      color: orange;
-      font-weight: bold;
-    }
-
-    button {
-      padding: 12px;
-      width: 100%;
-      margin-top: 10px;
-      background: red;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background: darkred;
-      transform: scale(1.03);
-    }
-
-    .output {
-      margin-top: 15px;
-      padding: 10px;
-      background: #0d0d12;
-      border-radius: 8px;
-      color: lime;
-      font-size: 20px;
-    }
-
-    .nav {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 20px;
-      box-sizing: border-box;
-    }
-
-    .nav button {
-      width: 45%;
-      background: #333;
-    }
-
-    .nav button:hover {
-      background: #555;
-    }
-
-    .instructions {
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .dot {
-      text-align: center;
-      margin-top: 10px;
-      color: gray;
-    }
-  </style>
+img {
+  width:100%;
+  border-radius:10px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
-
-  <!-- PAGE 1 -->
-  <div class="page active" id="p1">
-
-    <h1>🎮 ID Generator</h1>
-
-    <div class="warning">⚠ WARNING</div>
-    <p style="font-size:13px; color:#ffcc66;">
-      These IDs are randomly generated and may not work in Roblox.
-    </p>
-
-    <button onclick="generate(); clickSound()">Generate ID</button>
-
-    <div class="output" id="out">---</div>
-
+<!-- TUTORIAL -->
+<div class="screen active" id="tutorial">
+  <div class="card">
+    <h1>🎮 Welcome</h1>
+    <p>This is a Roblox Game Hub</p>
+    <button onclick="nextScreen()">Start Tutorial</button>
   </div>
+</div>
 
-  <!-- PAGE 2 -->
-  <div class="page" id="p2">
-
-    <h1>📜 How to Use</h1>
-
-    <div class="instructions">
-      1. Click "Generate ID"<br><br>
-      2. Copy the number shown<br><br>
-      3. Try using it in Roblox searches or testing tools<br><br>
-      4. If it doesn’t work, generate another one<br><br>
-      ⚠ Not all IDs are valid Roblox game IDs
-    </div>
-
+<div class="screen" id="tutorial2">
+  <div class="card">
+    <h1>📜 How it works</h1>
+    <p>Generate IDs, browse posts, and share games</p>
+    <button onclick="nextScreen()">Next</button>
   </div>
+</div>
 
-  <!-- PAGE 3 -->
-  <div class="page" id="p3">
+<div class="screen" id="main">
 
-    <h1>⚡ Tips</h1>
+  <div class="card">
 
-    <div class="instructions">
-      • Higher numbers are more likely to exist<br><br>
-      • Try multiple IDs<br><br>
-      • Use responsibly for testing only<br><br>
-      • This is NOT connected to Roblox servers
-    </div>
+    <h1>🎮 Game Hub</h1>
 
-  </div>
+    <input id="name" placeholder="Game Name"><br><br>
+    <input id="id" placeholder="Game ID"><br><br>
+    <input id="img" placeholder="Image URL"><br>
 
-  <!-- NAV -->
-  <div class="nav">
-    <button onclick="prev()">⬅ Prev</button>
-    <button onclick="next()">Next ➡</button>
+    <button onclick="addPost()">Post Game</button>
+
+    <div id="feed"></div>
+
   </div>
 
 </div>
 
-<audio id="click" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<audio id="click" src="https://www.soundjay.com/buttons_c2026/sounds/button-15.mp3"></audio>
 
 <script>
-  let page = 1;
+let screen = 0;
 
-  function showPage(n) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('p' + n).classList.add('active');
-  }
+function playSound(){
+  document.getElementById("click").play();
+}
 
-  function next() {
-    if (page < 3) page++;
-    showPage(page);
-    clickSound();
-  }
+function nextScreen(){
+  playSound();
+  document.querySelectorAll(".screen")[screen].classList.remove("active");
+  screen++;
+  document.querySelectorAll(".screen")[screen].classList.add("active");
+}
 
-  function prev() {
-    if (page > 1) page--;
-    showPage(page);
-    clickSound();
-  }
+function addPost(){
+  playSound();
 
-  function generate() {
-    let id = Math.floor(Math.random() * 9000000000) + 1000000000;
-    document.getElementById("out").innerText = id;
-  }
+  let name = document.getElementById("name").value;
+  let id = document.getElementById("id").value;
+  let img = document.getElementById("img").value;
 
-  function clickSound() {
-    document.getElementById("click").currentTime = 0;
-    document.getElementById("click").play();
-  }
+  let post = document.createElement("div");
+  post.className = "post";
+  post.innerHTML = `
+    <h3>${name}</h3>
+    <p>ID: ${id}</p>
+    <img src="${img}">
+  `;
+
+  document.getElementById("feed").appendChild(post);
+}
 </script>
 
 </body>
