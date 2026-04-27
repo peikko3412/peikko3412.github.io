@@ -2,90 +2,107 @@
 <html>
 <head>
   <title>Roblox Game ID Generator</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .scroll {
+      width: 420px;
+      height: 500px;
+      overflow-y: auto;
+      background: #15151d;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .warning {
+      color: orange;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtext {
+      color: #ffcc66;
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: darkred;
+      transform: scale(1.03);
+    }
+
+    .output {
+      margin-top: 20px;
+      font-size: 22px;
+      color: lime;
+      text-align: center;
+      padding: 10px;
+      background: #0d0d12;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="scroll">
 
-    <div class="card">
+  <h1>🎮 Roblox Game ID Generator</h1>
 
-      <h1>🎮 Roblox Game ID Generator</h1>
-
-      <div class="warning">⚠ WARNING</div>
-      <div class="subtext">
-        Some IDs may not work because they are randomly generated.
-      </div>
-
-      <button onclick="generateID()">Generate ID</button>
-
-      <div class="output" id="output">---</div>
-
-    </div>
-
+  <div class="warning">⚠ WARNING</div>
+  <div class="subtext">
+    Some IDs may not work because they are randomly generated.
   </div>
 
-  <script src="script.js"></script>
+  <button onclick="generateID(); playSound();">Generate ID</button>
+
+  <div class="output" id="output">---</div>
+
+</div>
+
+<!-- click sound -->
+<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+
+<script>
+  function generateID() {
+    let id = Math.floor(Math.random() * 9000000000) + 1000000000;
+    document.getElementById("output").innerText = id;
+  }
+
+  function playSound() {
+    document.getElementById("clickSound").play();
+  }
+</script>
 
 </body>
 </html>
-body {
-  background: #0f0f0f;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  margin-top: 80px;
-}
-
-.card {
-  background: #1c1c1c;
-  width: 360px;
-  margin: auto;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.6);
-}
-
-.warning {
-  color: orange;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-.subtext {
-  color: #ffcc66;
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-
-button {
-  background: red;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin-top: 15px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: 0.2s;
-}
-
-button:hover {
-  background: darkred;
-  transform: scale(1.05);
-}
-
-.output {
-  margin-top: 20px;
-  font-size: 24px;
-  color: lime;
-}
-function generateID() {
-  let id = Math.floor(Math.random() * 9000000000) + 1000000000;
-  document.getElementById("output").innerText = id;
-}
