@@ -1,135 +1,259 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Roblox Game Hub</title>
+<title>Experimental Game ID Lab</title>
 
 <style>
 body {
   margin:0;
   font-family:Arial;
-  background:#0b0b0f;
-  color:white;
+  background:#05060a;
   overflow:hidden;
-}
-
-.screen {
-  display:none;
-  height:100vh;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
-
-.active {
-  display:flex;
-}
-
-/* card */
-.card {
-  background:#15151d;
-  padding:20px;
-  width:400px;
-  border-radius:15px;
-  text-align:center;
-  box-shadow:0 0 20px rgba(0,0,0,0.7);
-}
-
-button {
-  margin-top:10px;
-  padding:10px;
-  width:100%;
-  background:red;
-  border:none;
   color:white;
-  border-radius:8px;
-  cursor:pointer;
 }
 
-/* feed */
-.post {
-  background:#1c1c25;
-  padding:10px;
-  margin-top:10px;
-  border-radius:10px;
+/* background blobs */
+.blob {
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:0.5;
+  animation: float 6s infinite ease-in-out;
+}
+.b1 { background:#7b2ff7; top:10%; left:10%; }
+.b2 { background:#00c6ff; bottom:10%; right:10%; }
+
+@keyframes float {
+  0% {transform:translateY(0px);}
+  50% {transform:translateY(-20px);}
+  100% {transform:translateY(0px);}
 }
 
-img {
+/* main card */
+.card {
+  position:relative;
+  z-index:2;
+  width:450px;
+  margin:auto;
+  top:50%;
+  transform:translateY(-50%);
+  padding:25px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  from {opacity:0; transform:translateY(-60px);}
+  to {opacity:1; transform:translateY(-50%);}
+}
+
+/* inputs */
+input, textarea {
   width:100%;
+  padding:12px;
+  margin-top:8px;
   border-radius:10px;
+  border:none;
+  background:#111;
+  color:white;
+}
+
+/* buttons */
+button {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#7b2ff7,#00c6ff);
+  color:white;
+  transition:0.2s;
+}
+
+button:hover {
+  transform:scale(1.05);
+}
+
+/* posts panel */
+#panel {
+  position:fixed;
+  right:20px;
+  bottom:80px;
+  width:320px;
+  max-height:400px;
+  overflow:auto;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  border-radius:12px;
+  padding:10px;
+  display:none;
+}
+
+.post {
+  background:#111;
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  animation: fade 0.3s ease;
+}
+
+@keyframes fade {
+  from {opacity:0; transform:scale(0.9);}
+  to {opacity:1; transform:scale(1);}
+}
+
+/* roll effect */
+.roll {
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  100%{transform:translateX(0);}
+}
+
+/* db viewer */
+#db {
+  position:fixed;
+  left:10px;
+  bottom:10px;
+  width:250px;
+  height:150px;
+  overflow:hidden;
+  font-size:8px;
+  opacity:0.25;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TUTORIAL -->
-<div class="screen active" id="tutorial">
-  <div class="card">
-    <h1>🎮 Welcome</h1>
-    <p>This is a Roblox Game Hub</p>
-    <button onclick="nextScreen()">Start Tutorial</button>
-  </div>
-</div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
 
-<div class="screen" id="tutorial2">
-  <div class="card">
-    <h1>📜 How it works</h1>
-    <p>Generate IDs, browse posts, and share games</p>
-    <button onclick="nextScreen()">Next</button>
-  </div>
-</div>
+<div class="card" id="card">
 
-<div class="screen" id="main">
+  <h1>🧪 Experimental ID Lab</h1>
 
-  <div class="card">
+  <input id="id" placeholder="Game ID">
+  <textarea id="msg" placeholder="Message"></textarea>
 
-    <h1>🎮 Game Hub</h1>
-
-    <input id="name" placeholder="Game Name"><br><br>
-    <input id="id" placeholder="Game ID"><br><br>
-    <input id="img" placeholder="Image URL"><br>
-
-    <button onclick="addPost()">Post Game</button>
-
-    <div id="feed"></div>
-
-  </div>
+  <button onclick="roll()">🎲 Roll ID</button>
+  <button onclick="post()">📌 Post</button>
+  <button onclick="clearDB()">🧹 Clear Experiment</button>
 
 </div>
 
-<audio id="click" src="https://www.soundjay.com/buttons_c2026/sounds/button-15.mp3"></audio>
+<button style="position:fixed;bottom:20px;right:20px;padding:12px;border-radius:50px;border:none;background:#7b2ff7;color:white;" onclick="toggle()">Posts</button>
+
+<div id="panel"></div>
+
+<pre id="db"></pre>
+
+<audio id="click" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
 
 <script>
-let screen = 0;
 
-function playSound(){
-  document.getElementById("click").play();
+/* =========================
+   EXPERIMENTAL DATABASE (200 LINES SIMULATION)
+   ========================= */
+let EXP_DB = [];
+for(let i=0;i<200;i++){
+  EXP_DB.push({id:null,msg:null,status:"EMPTY_SLOT"});
 }
 
-function nextScreen(){
-  playSound();
-  document.querySelectorAll(".screen")[screen].classList.remove("active");
-  screen++;
-  document.querySelectorAll(".screen")[screen].classList.add("active");
+/* sound engine */
+function sound(){
+  let s = document.getElementById("click");
+  s.currentTime=0;
+  s.play();
 }
 
-function addPost(){
-  playSound();
+/* roll system */
+function roll(){
+  sound();
+  let card = document.getElementById("card");
+  card.classList.add("roll");
 
-  let name = document.getElementById("name").value;
+  let id = Math.floor(Math.random()*9999999999);
+  document.getElementById("id").value = id;
+
+  setTimeout(()=>card.classList.remove("roll"),300);
+}
+
+/* post system */
+function post(){
+  sound();
+
   let id = document.getElementById("id").value;
-  let img = document.getElementById("img").value;
+  let msg = document.getElementById("msg").value;
 
-  let post = document.createElement("div");
-  post.className = "post";
-  post.innerHTML = `
-    <h3>${name}</h3>
-    <p>ID: ${id}</p>
-    <img src="${img}">
-  `;
+  let obj = {id,msg};
 
-  document.getElementById("feed").appendChild(post);
+  EXP_DB.push(obj);
+  EXP_DB.shift();
+
+  render();
+  updateDB();
 }
+
+/* render posts */
+function render(){
+  let p = document.getElementById("panel");
+  p.innerHTML="";
+
+  EXP_DB.forEach(e=>{
+    if(e.id){
+      let d = document.createElement("div");
+      d.className="post";
+      d.innerHTML="ID: "+e.id+"<br>"+e.msg;
+      p.appendChild(d);
+    }
+  });
+}
+
+/* toggle */
+function toggle(){
+  sound();
+  let p = document.getElementById("panel");
+  p.style.display = (p.style.display==="block")?"none":"block";
+}
+
+/* update debug DB */
+function updateDB(){
+  let db = document.getElementById("db");
+  let out = "";
+
+  for(let i=0;i<200;i++){
+    let e = EXP_DB[i];
+    if(e){
+      out += "DB["+i+"] = {"+(e.id||"NULL")+"}\n";
+    }
+  }
+
+  db.textContent = out;
+}
+
+/* clear */
+function clearDB(){
+  sound();
+  EXP_DB = [];
+  for(let i=0;i<200;i++){
+    EXP_DB.push({id:null,msg:null});
+  }
+  render();
+  updateDB();
+}
+
 </script>
 
 </body>
