@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox Game ID Generator</title>
+
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .box {
+      background: #222;
+      width: 350px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px black;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .warning {
+      color: orange;
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .warning-text {
+      color: #ffcc66;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: darkred;
+    }
+
+    #id {
+      margin-top: 20px;
+      font-size: 24px;
+      color: lime;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎮 Roblox Game ID Generator</h1>
+
+  <div class="box">
+
+    <div class="warning">⚠ WARNING</div>
+    <div class="warning-text">
+      Some of these IDs may not work because they are randomly generated, not real Roblox IDs.
+    </div>
+
+    <p>Click below to generate a game ID</p>
+
+    <button onclick="generateID()">Generate ID</button>
+
+    <div id="id">---</div>
+
+  </div>
+
+  <script>
+    function generateID() {
+      let id = Math.floor(Math.random() * 9000000000) + 1000000000;
+      document.getElementById("id").innerText = id;
+    }
+  </script>
+
+</body>
+</html>
