@@ -15,40 +15,33 @@
       height: 100vh;
     }
 
-    .scroll {
-      width: 420px;
-      height: 500px;
-      overflow-y: auto;
+    .card {
+      width: 400px;
       background: #15151d;
+      padding: 25px;
       border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      padding: 20px;
-    }
-
-    h1 {
       text-align: center;
-      font-size: 24px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
 
     .warning {
       color: orange;
       font-weight: bold;
-      text-align: center;
-      margin-top: 10px;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
     .subtext {
       color: #ffcc66;
       font-size: 13px;
-      text-align: center;
       margin-bottom: 20px;
     }
 
     button {
-      width: 100%;
       padding: 12px;
-      background: red;
+      width: 100%;
       border: none;
+      background: red;
       color: white;
       font-size: 16px;
       border-radius: 8px;
@@ -58,16 +51,14 @@
 
     button:hover {
       background: darkred;
-      transform: scale(1.03);
     }
 
     .output {
       margin-top: 20px;
       font-size: 22px;
       color: lime;
-      text-align: center;
-      padding: 10px;
       background: #0d0d12;
+      padding: 10px;
       border-radius: 10px;
     }
   </style>
@@ -75,34 +66,27 @@
 
 <body>
 
-<div class="scroll">
+  <div class="card">
 
-  <h1>🎮 Roblox Game ID Generator</h1>
+    <h1>🎮 Roblox Game ID Generator</h1>
 
-  <div class="warning">⚠ WARNING</div>
-  <div class="subtext">
-    Some IDs may not work because they are randomly generated.
+    <div class="warning">⚠ WARNING</div>
+    <div class="subtext">
+      These IDs are randomly generated and may not be real Roblox game IDs.
+    </div>
+
+    <button onclick="generateID()">Generate ID</button>
+
+    <div class="output" id="output">---</div>
+
   </div>
 
-  <button onclick="generateID(); playSound();">Generate ID</button>
-
-  <div class="output" id="output">---</div>
-
-</div>
-
-<!-- click sound -->
-<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
-
-<script>
-  function generateID() {
-    let id = Math.floor(Math.random() * 9000000000) + 1000000000;
-    document.getElementById("output").innerText = id;
-  }
-
-  function playSound() {
-    document.getElementById("clickSound").play();
-  }
-</script>
+  <script>
+    function generateID() {
+      let id = Math.floor(Math.random() * 9000000000) + 1000000000;
+      document.getElementById("output").innerText = id;
+    }
+  </script>
 
 </body>
 </html>
